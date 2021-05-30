@@ -16,11 +16,14 @@ def log(request):
             try:
                 ret = function(*args, **kwargs)
                 dict_param['status'] = str(ret.status_code)
+                print(dict_param)
+                write_to_file(dict_param)
+                return ret
             except Exception as e:
                 dict_param['status'] = str(e)
-            print(dict_param)
-            write_to_file(dict_param)
-            return function(*args, **kwargs)
+                print(dict_param)
+                write_to_file(dict_param)
+                return function(*args, **kwargs)
         return called
     return log_server
 
@@ -48,8 +51,10 @@ def get_dict_param(request):
                 dict_data = decode_dict(request)
                 email = dict_data['email']
                 dict_param['params'] = email
-            elif path_info == '/api' and len(query_string) > 0:
+                print(dict_param['params'])
+            elif path_info == '/api/' and len(query_string) > 0:
                 dict_param['params'] = query_string
+                print(dict_param['params'])
 
     except Exception as e:
         print(f'{type(e).__name__}: {e}')
